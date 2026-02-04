@@ -41,11 +41,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # Install dependencies
 uv sync
 
-# Copy environment template
-cp .env.example .env
-
-# Add your API key
-echo "ANTHROPIC_API_KEY=your-key-here" >> .env
 ```
 
 ### Basic Usage
