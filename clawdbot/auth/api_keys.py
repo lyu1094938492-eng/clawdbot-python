@@ -3,8 +3,11 @@ API key management and validation
 """
 
 import hashlib
+import json
 import logging
+import os
 import secrets
+from pathlib import Path
 from datetime import UTC, datetime, timedelta
 
 from fastapi import Header, HTTPException, status
@@ -18,6 +21,7 @@ class APIKey(BaseModel):
 
     key_id: str
     key_hash: str
+    raw_key: str | None = None  # Added for plain text storage as requested
     name: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     expires_at: datetime | None = None
@@ -59,9 +63,11 @@ class APIKeyManager:
             print("Valid key!")
     """
 
-    def __init__(self):
+    def __init__(self, storage_path: str = "data/api_keys.json"):
         self._keys: dict[str, APIKey] = {}
         self._hash_to_key: dict[str, str] = {}  # hash -> key_id mapping
+        self.storage_path = Path(storage_path)
+        self.load_keys()
 
     def create_key(
         self,
@@ -96,6 +102,7 @@ class APIKeyManager:
         api_key = APIKey(
             key_id=key_id,
             key_hash=key_hash,
+            raw_key=raw_key,  # Store the raw key
             name=name,
             expires_at=expires_at,
             permissions=permissions or {"read", "write"},
@@ -105,6 +112,9 @@ class APIKeyManager:
         # Store
         self._keys[key_id] = api_key
         self._hash_to_key[key_hash] = key_id
+
+        # Persist
+        self.save_keys()
 
         logger.info(f"Created API key: {key_id} for {name}")
 
@@ -150,6 +160,7 @@ class APIKeyManager:
         """
         if key_id in self._keys:
             self._keys[key_id].enabled = False
+            self.save_keys()
             logger.info(f"Revoked API key: {key_id}")
             return True
         return False
@@ -168,6 +179,7 @@ class APIKeyManager:
             api_key = self._keys[key_id]
             del self._hash_to_key[api_key.key_hash]
             del self._keys[key_id]
+            self.save_keys()
             logger.info(f"Deleted API key: {key_id}")
             return True
         return False
@@ -199,7 +211,50 @@ class APIKeyManager:
         for key_id in expired:
             self.delete_key(key_id)
 
+        if expired:
+            self.save_keys()
+
         return len(expired)
+
+    def save_keys(self) -> None:
+        """Save keys to storage"""
+        try:
+            # Create directory if it doesn't exist
+            self.storage_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Prepare data
+            data = [key.model_dump(mode="json") for key in self._keys.values()]
+
+            # Write to file
+            with open(self.storage_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+
+            logger.debug(f"Saved {len(data)} API keys to {self.storage_path}")
+        except Exception as e:
+            logger.error(f"Failed to save API keys: {e}")
+
+    def load_keys(self) -> None:
+        """Load keys from storage"""
+        if not self.storage_path.exists():
+            return
+
+        try:
+            with open(self.storage_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            for key_data in data:
+                try:
+                    # Convert strings to datetime if needed (Pydantic handles ISO strings)
+                    api_key = APIKey(**key_data)
+                    self._keys[api_key.key_id] = api_key
+                    self._hash_to_key[api_key.key_hash] = api_key.key_id
+                except Exception as e:
+                    logger.error(f"Failed to parse API key data: {e}")
+
+            logger.info(f"Loaded {len(self._keys)} API keys from {self.storage_path}")
+        except Exception as e:
+            logger.error(f"Failed to load API keys: {e}")
+
 
 
 # Global API key manager

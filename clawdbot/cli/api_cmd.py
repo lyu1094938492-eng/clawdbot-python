@@ -32,6 +32,8 @@ def api_start(
         # Create components
         runtime = AgentRuntime(
             model=settings.agent.model,
+            api_key=settings.agent.api_key,
+            base_url=settings.agent.base_url,
             enable_context_management=settings.agent.enable_context_management,
         )
         session_manager = SessionManager(settings.workspace_dir)

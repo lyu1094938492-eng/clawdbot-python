@@ -267,7 +267,7 @@ def create_app() -> FastAPI:
             return AgentResponse(
                 session_id=request.session_id,
                 response=response_text,
-                metadata={"message_count": len(session.messages), "model": runtime.model},
+                metadata={"message_count": len(session.messages), "model": runtime.model_str},
             )
 
         except Exception as e:

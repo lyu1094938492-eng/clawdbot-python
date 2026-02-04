@@ -12,7 +12,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class AgentConfig(BaseModel):
     """Agent configuration"""
 
-    model: str = Field(default="anthropic/claude-opus-4", description="LLM model to use")
+    model: str = Field(default="model", description="LLM model to use")
     api_key: str | None = Field(default=None, description="API key (uses env var if not set)")
     max_retries: int = Field(default=3, ge=0, le=10, description="Maximum retry attempts")
     enable_context_management: bool = Field(

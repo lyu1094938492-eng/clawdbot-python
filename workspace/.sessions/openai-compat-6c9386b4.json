@@ -1,0 +1,82 @@
+{
+  "session_id": "openai-compat-6c9386b4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful AI assistant with system access. Use the provided tools to help the user.",
+      "timestamp": "2026-02-04T15:56:19.733885",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "user",
+      "content": "\u6211\u7684\u684c\u9762\u6709\u4ec0\u4e48\u6587\u4ef6\u5939\uff1f\u4f60\u53ef\u4ee5\u4f7f\u7528 bash \u5de5\u5177\u8fd0\u884c 'dir %USERPROFILE%\\Desktop'\u3002",
+      "timestamp": "2026-02-04T15:56:19.734562",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "assistant",
+      "content": "\u6211\u9700\u8981\u67e5\u770b\u60a8\u684c\u9762\u4e0a\u7684\u6587\u4ef6\u5939\u3002\u8ba9\u6211\u4f7f\u7528\u9002\u5f53\u7684\u547d\u4ee4\u6765\u83b7\u53d6\u8fd9\u4e9b\u4fe1\u606f\u3002\n\n",
+      "timestamp": "2026-02-04T15:56:24.760576",
+      "tool_calls": [
+        {
+          "id": "call_ca29b17869c84b9fa2a49183",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"ls -la ~/Desktop\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "'ls' \ufffd\ufffd\ufffd\ufffd\ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\u2cbf\ufffd\ufffd\ufffd\ue8ec\u04b2\ufffd\ufffd\ufffd\u01ff\ufffd\ufffd\ufffd\ufffd\u0435\u0133\ufffd\ufffd\ufffd\r\n\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\ufffd\ufffd\r\n",
+      "timestamp": "2026-02-04T15:56:24.788401",
+      "tool_calls": null,
+      "tool_call_id": "call_ca29b17869c84b9fa2a49183",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u770b\u8d77\u6765\u60a8\u4f7f\u7528\u7684\u662fWindows\u7cfb\u7edf\uff0c\u6211\u5c1d\u8bd5\u4f7f\u7528\u6b63\u786e\u7684\u547d\u4ee4\u6765\u67e5\u770b\u60a8\u7684\u684c\u9762\u6587\u4ef6\u5939\uff1a\n\n",
+      "timestamp": "2026-02-04T15:56:31.471183",
+      "tool_calls": [
+        {
+          "id": "call_5e90848724d54ce79aacf956",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"dir %USERPROFILE%\\\\Desktop\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": " \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd C \ufffd\u0435\u013e\ufffd\u00fb\ufffd\u0431\ufffd\u01e9\ufffd\ufffd\r\n \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u043a\ufffd\ufffd\ufffd 3C38-5610\r\n\r\n C:\\Users\\bige\\Desktop \ufffd\ufffd\u013f\u00bc\r\n\r\n2026/02/01  00:36    <DIR>          .\r\n2026/02/01  00:36    <DIR>          ..\r\n2025/12/18  22:10             1,378 Antigravity.lnk\r\n2025/02/22  23:59    <DIR>          beautichen\r\n2025/03/23  20:58           229,663 beian.jpg\r\n2025/08/27  23:05           137,643 Bubuyier.gif\r\n2025/03/01  09:47             2,200 Canva.lnk\r\n2025/04/10  22:38             2,072 CCtalk.lnk\r\n2026/01/31  16:19               586 com.docker.llama-server.20260131-161902-706.log\r\n2026/01/31  16:19               586 com.docker.llama-server.20260131-161903-572.log\r\n2026/02/01  00:36             2,136 Docker Desktop.lnk\r\n2025/03/16  21:29    <DIR>          ESGDATA\r\n2025/11/25  00:26             3,165 Google Gemini.lnk\r\n2026/01/18  23:38             2,961 Google Maps.lnk\r\n2025/11/22  20:25           205,979 isaca2025.pdf\r\n2025/11/04  04:35     2,139,401,983 national flag.mp4\r\n2025/02/17  21:32         7,550,384 OfficeSetup.exe\r\n2025/08/27  23:08             8,514 OIP-C.webp\r\n2026/02/04  22:06    <DIR>          project\r\n2025/02/25  22:10        28,604,208 python-3.13.2-amd64.exe\r\n2025/11/24  21:52           951,553 R-C.jfif\r\n2025/04/06  22:08           194,108 To-khai-thi-thuc.pdf\r\n2026/01/24  16:29               618 Trae.lnk\r\n2025/02/25  21:55             1,235 Visual Studio Code.lnk\r\n2025/02/18  20:53       121,323,520 Workspace_win.msi\r\n2025/11/24  21:52           858,279 world map.jfif\r\n2025/01/10  20:30             2,407 WPS Office.lnk\r\n2025/03/03  22:05             1,920 \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ud947\udffc\ufffd\u04f3\ufffd\u02b6\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013b\u05e8\u04b5\ufffd\ufffd\ufffd\ube64\ufffd\ufffd.lnk\r\n2025/07/31  22:19    <DIR>          \u05e8\ufffd\u03b2\ufffd\ufffd\ufffd\ufffd\ufffd\r\n2025/04/12  15:59               716 \ufffd\ufffd\u04f3\u05e8\u04b5\ufffd\ufffd.lnk\r\n2025/04/13  11:49    <DIR>          \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u03e2\r\n2025/04/06  22:33           122,567 \u03a2\ufffd\ufffd\u037c\u01ac_20250406223326.jpg\r\n2025/03/16  22:38            12,180 \u03a2\ufffd\ufffd\u0421\ufffd\ufffd\ufffd\ufffd\u037c\ufffd\ufffd.png\r\n2025/11/26  23:08               748 \u03a2\ufffd\u017f\ufffd\ufffd\ufffd\ufffd\u07f9\ufffd\ufffd\ufffd.lnk\r\n2025/03/03  19:44             1,070 \ufffd\ufffd\ufffd\ufffd.lnk\r\n2025/12/18  21:14    <DIR>          \ufffd\ufffd\ufffd\ufffd\r\n2025/12/18  01:23            62,035 \ufffd\ufffd\ufffd\ufffd.PNG\r\n2025/12/17  00:38            20,604 \ufffd\u00bd\ufffd DOCX \ufffd\u0135\ufffd.docx\r\n2025/02/12  23:41            20,992 \ufffd\u00bd\ufffd PPT \ufffd\ufffd\u02be\ufffd\u0138\ufffd.ppt\r\n2025/03/18  22:00            39,939 \ufffd\u00bd\ufffd PPTX \ufffd\ufffd\u02be\ufffd\u0138\ufffd.pptx\r\n2025/03/13  21:40             8,597 \ufffd\u00bd\ufffd XLSX \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd.xlsx\r\n2025/12/17  01:40            15,856 \ufffd\u00bd\ufffd\ufffd\u0131\ufffd\ufffd\u0135\ufffd.HTML\r\n2025/01/10  20:29             1,212 \ufffd\ufffd\ufffd\ufffdOffice.lnk\r\n2025/03/01  18:16            36,939 \u033c\u02f0\u0368V1.pptx\r\n              36 \ufffd\ufffd\ufffd\u013c\ufffd  2,299,830,553 \ufffd\u05bd\ufffd\r\n               8 \ufffd\ufffd\u013f\u00bc 17,932,513,280 \ufffd\ufffd\ufffd\ufffd\ufffd\u05bd\ufffd\r\n",
+      "timestamp": "2026-02-04T15:56:31.501190",
+      "tool_calls": null,
+      "tool_call_id": "call_5e90848724d54ce79aacf956",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u6839\u636e\u76ee\u5f55\u5217\u8868\uff0c\u60a8\u684c\u9762\u4e0a\u6709\u4ee5\u4e0b\u6587\u4ef6\u5939\uff1a\n\n1. `beautichen` - \u521b\u5efa\u4e8e 2025\u5e742\u670822\u65e5\n2. `ESGDATA` - \u521b\u5efa\u4e8e 2025\u5e743\u670816\u65e5\n3. `project` - \u521b\u5efa\u4e8e 2026\u5e742\u67084\u65e5\n4. `\u0440\u03b2` - \u521b\u5efa\u4e8e 2025\u5e747\u670831\u65e5\uff08\u8fd9\u4f3c\u4e4e\u662f\"\u7814\u7a76\u751f\"\u76f8\u5173\u7684\u6587\u4ef6\u5939\uff09\n5. `\u03e2` - \u521b\u5efa\u4e8e 2025\u5e744\u670813\u65e5\uff08\u8fd9\u53ef\u80fd\u662f\"\u4e13\u4e1a\u4fe1\u606f\"\u76f8\u5173\u7684\u6587\u4ef6\u5939\uff09\n6. `` - \u521b\u5efa\u4e8e 2025\u5e7412\u670818\u65e5\uff08\u8fd9\u53ef\u80fd\u4e0ePython\u76f8\u5173\uff09\n\n\u6b64\u5916\uff0c\u60a8\u8fd8\u770b\u5230\u8bb8\u591a\u5176\u4ed6\u6587\u4ef6\uff0c\u5982\u94fe\u63a5\u6587\u4ef6(.lnk)\u3001\u56fe\u7247\u6587\u4ef6(.jpg, .gif, .webp, .jfif, .png)\u3001PDF\u6587\u6863\u3001\u53ef\u6267\u884c\u6587\u4ef6(.exe)\u3001\u89c6\u9891\u6587\u4ef6(.mp4)\u7b49\uff0c\u4f46\u4ee5\u4e0a\u662f\u60a8\u684c\u9762\u4e0a\u76846\u4e2a\u4e3b\u8981\u6587\u4ef6\u5939\u3002",
+      "timestamp": "2026-02-04T15:56:40.274231",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    }
+  ],
+  "metadata": {},
+  "created_at": "2026-02-04T15:56:19.731582+00:00",
+  "updated_at": "2026-02-04T15:56:40.274247+00:00"
+}

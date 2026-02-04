@@ -73,14 +73,14 @@ def onboard() -> None:
 
     # Ask for model preference
     console.print("[yellow]Step 1: Choose your AI model[/yellow]")
-    console.print("1. Claude Opus 4.5 (Anthropic) - Recommended")
+    console.print("1. Generic OpenAI API - Default")
     console.print("2. GPT-4 (OpenAI)")
     console.print("3. Keep default\n")
 
     choice = typer.prompt("Enter choice", default="3")
 
     if choice == "1":
-        config.agent.model = "anthropic/claude-opus-4-5-20250514"
+        config.agent.model = "qwen-plus"
     elif choice == "2":
         config.agent.model = "openai/gpt-4"
 
@@ -122,19 +122,6 @@ def doctor() -> None:
     checks.append(("Python Version", True, f"Python {py_version}"))
 
     # Check dependencies
-    try:
-        import anthropic
-
-        checks.append(("Anthropic SDK", True, "Installed"))
-    except ImportError:
-        checks.append(("Anthropic SDK", False, "Not installed"))
-
-    try:
-        import websockets
-
-        checks.append(("WebSockets", True, "Installed"))
-    except ImportError:
-        checks.append(("WebSockets", False, "Not installed"))
 
     # Display results
     table = Table(title="Diagnostic Results")

@@ -5,7 +5,7 @@ Welcome to the ClawdBot API documentation. This document provides a comprehensiv
 ## 1. Base URL
 - **REST API**: `http://<host>:<port>` (Default port: `8000`)
 - **OpenAI Compatible**: `http://<host>:<port>/v1`
-- **Gateway WebSocket**: `ws://<host>:<port>` (Default port: `8001`)
+- **Gateway WebSocket**: `ws://<host>:<port>` (Default port: `3000`)
 
 ---
 
@@ -40,6 +40,9 @@ X-API-Key: <your_api_key>
 
 ### 3.2 Channel Management
 - **`GET /channels`**: List all registered channels (Slack, Telegram, etc.).
+- **`GET /channels/{channel_id}`**: Get specific channel details and status.
+- **`POST /channels/{channel_id}/start`**: Initialize and start a channel.
+- **`POST /channels/{channel_id}/stop`**: Stop a running channel.
 - **`POST /channels/send`**: Send a message through a specific channel.
   - **Payload**:
     ```json
@@ -61,6 +64,7 @@ X-API-Key: <your_api_key>
 ClawdBot supports a subset of the OpenAI API, making it a drop-in replacement for many tools.
 
 - **`GET /v1/models`**: List available models.
+- **`GET /v1/models/{model_id}`**: Get specific model info.
 - **`POST /v1/chat/completions`**: Create a chat completion (supports streaming).
   - Matches the standard OpenAI schema.
   - Supports `stream: true`.
@@ -87,8 +91,11 @@ Messages use a framed JSON format:
 | `connect` | Handshake & authentication | `{ "client": { "name": "..." }, "maxProtocol": 1 }` |
 | `health` | Connectivity check | N/A |
 | `status` | Server & agent status | N/A |
+| `config.get` | Get current server config | N/A |
 | `sessions.list` | List active sessions | N/A |
+| `channels.list` | List available channels | N/A |
 | `chat.history` | Get session history | `{ "sessionKey": "..." }` |
+| `chat.send` | Send a user message | `{ "text": "...", "sessionKey": "..." }` |
 | `agent` | **Run Agent (Async)** | `{ "message": "...", "sessionId": "..." }` |
 
 ### 5.3 Streaming Events (Server -> Client)

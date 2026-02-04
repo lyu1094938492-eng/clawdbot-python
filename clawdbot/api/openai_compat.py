@@ -143,21 +143,16 @@ def set_session_manager(manager: SessionManager) -> None:
 
 def _map_model_name(model: str) -> str:
     """Map OpenAI model name to internal model name"""
-    model_mapping = {
-        "gpt-4": "openai/gpt-4",
-        "gpt-4-turbo": "openai/gpt-4-turbo",
-        "gpt-4o": "openai/gpt-4o",
-        "gpt-3.5-turbo": "openai/gpt-3.5-turbo",
-        "claude-3-opus": "anthropic/claude-opus-4",
-        "claude-3-sonnet": "anthropic/claude-sonnet-4",
-        "claude-opus-4": "anthropic/claude-opus-4",
-        "claude-sonnet-4": "anthropic/claude-sonnet-4",
-    }
+    # If it's a generic "model" or similar, use the configured model from settings
+    if model in ("model", "default", "auto"):
+        from ..config import get_settings
+        return get_settings().agent.model
 
     if "/" in model:
         return model
 
-    return model_mapping.get(model, f"anthropic/{model}")
+    # If it's just a model name, keep it as is or use the provider from settings if available
+    return model
 
 
 @router.get("/models", response_model=ModelsResponse)
@@ -274,6 +269,14 @@ async def chat_completions(
                                 ],
                             )
                             yield f"data: {chunk.model_dump_json()}\n\n"
+                    
+                    elif event.type == "tool_use":
+                        # We don't stream tool calls yet in this simplified compat layer,
+                        # but we could add it if needed. For now, we just log it.
+                        logger.info(f"Tool use in stream: {event.data}")
+                        # If we want to support streaming tool calls to OpenAI clients:
+                        # (This is complex because OpenAI expects tool_calls with index and ID)
+                        pass
 
                 # Send final chunk
                 final_chunk = ChatCompletionChunk(

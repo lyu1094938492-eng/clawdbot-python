@@ -1,0 +1,18 @@
+[
+  {
+    "key_id": "rl1DBElpIPRBbGWM2zFEBg",
+    "key_hash": "01324def7b13479aeab8442afbe5e6c4c9625117a78fc5d9075858d1beefefc0",
+    "raw_key": "clb_M_eAEJ_GNEKV2xvtIHdmA09EsED1LdNBgrO5mlpb5dg",
+    "name": "default",
+    "created_at": "2026-02-04T16:11:58.532337",
+    "expires_at": null,
+    "last_used": null,
+    "permissions": [
+      "read",
+      "admin",
+      "write"
+    ],
+    "rate_limit": null,
+    "enabled": true
+  }
+]

@@ -38,7 +38,7 @@ async def index(request: Request):
 
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "config": config, "channels": channel_registry.list_channels()},
+        {"request": request, "config": config, "channels": channel_registry.get_all()},
     )
 
 
@@ -59,7 +59,7 @@ async def api_status():
         "gateway": {"port": config.gateway.port, "bind": config.gateway.bind},
         "channels": [
             {"id": ch.id, "label": ch.label, "running": ch.is_running()}
-            for ch in channel_registry.list_channels()
+            for ch in channel_registry.get_all()
         ],
     }
 

@@ -15,12 +15,8 @@ from .errors import classify_error, format_error_message, is_retryable_error
 from .failover import FailoverReason, FallbackChain, FallbackManager
 from .formatting import FormatMode, ToolFormatter
 from .providers import (
-    AnthropicProvider,
-    BedrockProvider,
-    GeminiProvider,
     LLMMessage,
     LLMProvider,
-    OllamaProvider,
     OpenAIProvider,
 )
 from .queuing import QueueManager
@@ -41,44 +37,25 @@ class AgentEvent:
 
 class MultiProviderRuntime:
     """
-    Enhanced Agent runtime with support for multiple LLM providers
-
-    Supported providers:
-    - anthropic: Claude models
-    - openai: GPT models
-    - gemini: Google Gemini
-    - bedrock: AWS Bedrock
-    - ollama: Local models
-    - openai-compatible: Any OpenAI-compatible API
-
-    Model format: "provider/model" or just "model" (defaults to anthropic)
-
+    Enhanced Agent runtime with support for OpenAI-compatible providers
+    
+    This runtime is optimized for internal network deployments using OpenAI-compatible
+    APIs (including local models, vLLM, etc.).
+    
     Examples:
-        # Anthropic
-        runtime = MultiProviderRuntime("anthropic/claude-opus-4-5")
-
-        # OpenAI
-        runtime = MultiProviderRuntime("openai/gpt-4")
-
-        # Google Gemini
-        runtime = MultiProviderRuntime("gemini/gemini-pro")
-
-        # AWS Bedrock
-        runtime = MultiProviderRuntime("bedrock/anthropic.claude-3-sonnet")
-
-        # Ollama (local)
-        runtime = MultiProviderRuntime("ollama/llama3")
-
-        # OpenAI-compatible (custom base URL)
+        # Generic OpenAI-compatible
+        runtime = MultiProviderRuntime("model-name")
+        
+        # Custom Base URL
         runtime = MultiProviderRuntime(
-            "lmstudio/model-name",
-            base_url="http://localhost:1234/v1"
+            "model-name",
+            base_url="http://localhost:8000/v1"
         )
     """
 
     def __init__(
         self,
-        model: str = "anthropic/claude-opus-4-5-20250514",
+        model: str = "openai-compatible/model",
         api_key: str | None = None,
         base_url: str | None = None,
         max_retries: int = 3,
@@ -158,8 +135,8 @@ class MultiProviderRuntime:
             parts = model.split("/", 1)
             return parts[0], parts[1]
         else:
-            # Default to anthropic
-            return "anthropic", model
+            # Default to openai-compatible
+            return "openai-compatible", model
 
     def _create_provider(self) -> LLMProvider:
         """Create appropriate provider based on provider name"""
@@ -174,29 +151,8 @@ class MultiProviderRuntime:
         }
 
         # Create provider
-        if provider_name == "anthropic":
-            return AnthropicProvider(**kwargs)
-
-        elif provider_name == "openai":
-            return OpenAIProvider(**kwargs)
-
-        elif provider_name in ("gemini", "google", "google-gemini"):
-            return GeminiProvider(**kwargs)
-
-        elif provider_name in ("bedrock", "aws-bedrock"):
-            return BedrockProvider(**kwargs)
-
-        elif provider_name == "ollama":
-            return OllamaProvider(**kwargs)
-
-        elif provider_name in ("lmstudio", "openai-compatible", "custom"):
-            # OpenAI-compatible with custom base URL
-            return OpenAIProvider(**kwargs)
-
-        else:
-            # Unknown provider, try OpenAI-compatible
-            logger.warning(f"Unknown provider '{provider_name}', trying OpenAI-compatible mode")
-            return OpenAIProvider(**kwargs)
+        # Always return OpenAIProvider for compatibility
+        return OpenAIProvider(**kwargs)
 
     async def run_turn(
         self,
