@@ -41,7 +41,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # Install dependencies
 uv sync
 
-
 ```
 
 ### Basic Usage
