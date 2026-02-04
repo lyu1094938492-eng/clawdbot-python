@@ -1,0 +1,8 @@
+{
+  "id": "bluebubbles",
+  "name": "ubluebubbles Channel",
+  "version": "1.0.0",
+  "description": "ubluebubbles messaging integration",
+  "author": "ClawdBot",
+  "main": "plugin.py"
+}

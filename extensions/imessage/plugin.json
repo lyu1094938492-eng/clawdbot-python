@@ -1,0 +1,8 @@
+{
+  "id": "imessage",
+  "name": "uimessage Channel",
+  "version": "1.0.0",
+  "description": "uimessage messaging integration",
+  "author": "ClawdBot",
+  "main": "plugin.py"
+}

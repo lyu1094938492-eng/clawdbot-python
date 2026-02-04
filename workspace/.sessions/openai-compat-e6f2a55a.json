@@ -1,0 +1,41 @@
+{
+  "session_id": "openai-compat-e6f2a55a",
+  "messages": [
+    {
+      "role": "user",
+      "content": "\u6211\u7684\u684c\u9762\u4e0a\u6709\u54ea\u4e9b\u6587\u4ef6\uff1f",
+      "timestamp": "2026-02-04T06:47:31.022383",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "assistant",
+      "content": null,
+      "timestamp": "2026-02-04T06:47:35.112167",
+      "tool_calls": [
+        {
+          "id": "call_ca361cedf77b4831ac1ddd",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"ls -la ~/Desktop\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "'ls' \ufffd\ufffd\ufffd\ufffd\ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\u2cbf\ufffd\ufffd\ufffd\ue8ec\u04b2\ufffd\ufffd\ufffd\u01ff\ufffd\ufffd\ufffd\ufffd\u0435\u0133\ufffd\ufffd\ufffd\r\n\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\ufffd\ufffd\r\n",
+      "timestamp": "2026-02-04T06:47:35.180405",
+      "tool_calls": null,
+      "tool_call_id": "call_ca361cedf77b4831ac1ddd",
+      "name": "bash"
+    }
+  ],
+  "metadata": {},
+  "created_at": "2026-02-04T06:47:31.020382+00:00",
+  "updated_at": "2026-02-04T06:47:35.180405+00:00"
+}

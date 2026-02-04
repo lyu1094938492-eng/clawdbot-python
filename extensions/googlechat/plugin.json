@@ -1,0 +1,9 @@
+{
+  "id": "googlechat",
+  "name": "Google Chat Channel",
+  "version": "1.0.0",
+  "description": "Google Chat integration",
+  "author": "ClawdBot",
+  "main": "plugin.py",
+  "requires": ["google-cloud-pubsub", "google-auth"]
+}

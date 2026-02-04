@@ -1,0 +1,16 @@
+{
+  "session_id": "openai-compat-28d2ab8d",
+  "messages": [
+    {
+      "role": "user",
+      "content": "\u6211\u7684\u684c\u9762\u4e0a\u6709\u54ea\u4e9b\u6587\u4ef6\uff1f",
+      "timestamp": "2026-02-04T06:43:27.203553",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    }
+  ],
+  "metadata": {},
+  "created_at": "2026-02-04T06:43:27.202550+00:00",
+  "updated_at": "2026-02-04T06:43:27.203553+00:00"
+}

@@ -1,0 +1,8 @@
+{
+  "id": "nostr",
+  "name": "unostr Channel",
+  "version": "1.0.0",
+  "description": "unostr messaging integration",
+  "author": "ClawdBot",
+  "main": "plugin.py"
+}

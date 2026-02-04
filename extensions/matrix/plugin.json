@@ -1,0 +1,9 @@
+{
+  "id": "matrix",
+  "name": "Matrix Channel",
+  "version": "1.0.0",
+  "description": "Matrix protocol integration",
+  "author": "ClawdBot",
+  "main": "plugin.py",
+  "requires": ["matrix-nio"]
+}

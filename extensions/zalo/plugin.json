@@ -1,0 +1,8 @@
+{
+  "id": "zalo",
+  "name": "uzalo Channel",
+  "version": "1.0.0",
+  "description": "uzalo messaging integration",
+  "author": "ClawdBot",
+  "main": "plugin.py"
+}

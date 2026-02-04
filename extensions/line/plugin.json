@@ -1,0 +1,8 @@
+{
+  "id": "line",
+  "name": "uline Channel",
+  "version": "1.0.0",
+  "description": "uline messaging integration",
+  "author": "ClawdBot",
+  "main": "plugin.py"
+}

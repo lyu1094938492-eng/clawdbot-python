@@ -1,0 +1,9 @@
+{
+  "id": "signal",
+  "name": "Signal Channel",
+  "version": "1.0.0",
+  "description": "Signal messaging integration",
+  "author": "ClawdBot",
+  "main": "plugin.py",
+  "requires": ["python-signalbot"]
+}

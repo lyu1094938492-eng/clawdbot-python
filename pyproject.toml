@@ -1,0 +1,198 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["clawdbot"]
+
+[project]
+name = "clawdbot"
+version = "0.4.0"
+description = "Personal AI assistant platform - Python implementation"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "ClawdBot Contributors" }
+]
+keywords = ["ai", "assistant", "chatbot", "agent", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    # Core
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "websockets>=12.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "typer[all]>=0.9.0",
+    "rich>=13.7.0",
+    # LLM
+    "anthropic>=0.18.0",
+    "openai>=1.12.0",
+    "google-generativeai>=0.3.0",
+    "boto3>=1.34.0",  # AWS Bedrock
+    # Channels
+    "python-telegram-bot>=21.0",
+    "discord.py>=2.3.0",
+    "slack-sdk>=3.27.0",
+    # Tools
+    "playwright>=1.41.0",
+    "httpx>=0.27.0",
+    # Storage
+    "lancedb>=0.5.0",
+    "aiosqlite>=0.19.0",
+    "pyarrow>=14.0.0",
+    # Search and Data
+    "duckduckgo-search>=4.0.0",
+    "sentence-transformers>=2.5.0",
+    "torch>=2.1.0",
+    # Scheduler
+    "apscheduler>=3.10.0",
+    # Voice
+    "elevenlabs>=0.2.0",
+    # Tools
+    "pillow>=10.0.0",
+    "psutil>=5.9.0",
+    # Utils
+    "pyyaml>=6.0",
+    "pyjson5>=1.6.0",
+    "python-dotenv>=1.0.0",
+    "aiofiles>=23.2.0",
+]
+
+[project.optional-dependencies]
+channels = [
+    "matrix-nio>=0.24.0",
+    "line-bot-sdk>=3.5.0",
+    "mattermostdriver>=7.3.0",
+    "botbuilder-core>=4.15.0",
+    "msgraph-sdk>=1.0.0",
+    "google-cloud-pubsub>=2.18.0",
+    "google-auth>=2.23.0",
+]
+voice = [
+    "twilio>=8.0.0",
+]
+all = [
+    "matrix-nio>=0.24.0",
+    "line-bot-sdk>=3.5.0",
+    "mattermostdriver>=7.3.0",
+    "botbuilder-core>=4.15.0",
+    "msgraph-sdk>=1.0.0",
+    "google-cloud-pubsub>=2.18.0",
+    "google-auth>=2.23.0",
+    "twilio>=8.0.0",
+]
+
+[project.scripts]
+clawdbot = "clawdbot.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/zhaoyuong/clawdbot-python"
+Documentation = "https://github.com/zhaoyuong/clawdbot-python/tree/main/docs"
+Repository = "https://github.com/zhaoyuong/clawdbot-python"
+Issues = "https://github.com/zhaoyuong/clawdbot-python/issues"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.12.0",
+    "black>=24.0.0",
+    "ruff>=0.2.0",
+    "mypy>=1.8.0",
+    "twine>=5.0.0",
+]
+
+[tool.hatchling.build.targets.wheel]
+packages = ["clawdbot"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP"]
+ignore = [
+    "E501",  # Line too long (handled by black)
+    "E722",  # Bare except (some tools need it)
+    "E402",  # Module level import not at top (some cases need lazy import)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**" = ["F401", "F811"]
+"examples/*.py" = ["F401"]  # Examples may have unused imports
+"extensions/*/plugin.py" = ["F401", "F821"]  # Extensions are stubs
+"clawdbot/channels/*.py" = ["F401", "F821"]  # Channels may be incomplete
+"clawdbot/config/schema.py" = ["N815"]  # Keep TypeScript naming
+"clawdbot/gateway/protocol/*.py" = ["N815"]  # Protocol uses camelCase
+"clawdbot/web/app.py" = ["F821"]  # Web app is optional
+"clawdbot/cli/main.py" = ["F401"]  # CLI checks imports for availability
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+no_implicit_optional = false
+warn_unused_ignores = false
+
+# Ignore specific issues in work-in-progress modules
+[[tool.mypy.overrides]]
+module = [
+    "clawdbot.channels.*",
+    "clawdbot.plugins.*",
+    "clawdbot.web.*",
+    "clawdbot.gateway.*",
+]
+ignore_errors = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+asyncio_mode = "auto"
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+    "--cov=clawdbot",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+markers = [
+    "asyncio: mark test as async",
+    "slow: mark test as slow",
+    "integration: mark test as integration test",
+]
+
+[tool.coverage.run]
+source = ["clawdbot"]
+omit = ["*/tests/*", "*/test_*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]

@@ -1,0 +1,116 @@
+{
+  "session_id": "openai-compat-0e05a2ef",
+  "messages": [
+    {
+      "role": "user",
+      "content": "\u6211\u7684\u684c\u9762\u4e0a\u6709\u54ea\u4e9b\u6587\u4ef6\uff1f",
+      "timestamp": "2026-02-04T06:55:21.769243",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "assistant",
+      "content": "\u6211\u9700\u8981\u67e5\u770b\u60a8\u684c\u9762\u76ee\u5f55\u4e2d\u7684\u6587\u4ef6\u5217\u8868\u3002\u8ba9\u6211\u4f7f\u7528bash\u547d\u4ee4\u6765\u5217\u51fa\u684c\u9762\u6587\u4ef6\u3002\n\n",
+      "timestamp": "2026-02-04T06:55:25.920053",
+      "tool_calls": [
+        {
+          "id": "call_60ef9308c65344cbbde1c4",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"ls -la ~/Desktop\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "'ls' \ufffd\ufffd\ufffd\ufffd\ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\u2cbf\ufffd\ufffd\ufffd\ue8ec\u04b2\ufffd\ufffd\ufffd\u01ff\ufffd\ufffd\ufffd\ufffd\u0435\u0133\ufffd\ufffd\ufffd\r\n\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\ufffd\ufffd\r\n",
+      "timestamp": "2026-02-04T06:55:25.968997",
+      "tool_calls": null,
+      "tool_call_id": "call_60ef9308c65344cbbde1c4",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u770b\u8d77\u6765\u60a8\u7684\u7cfb\u7edf\u53ef\u80fd\u4e0d\u662f\u6807\u51c6\u7684Linux/Unix\u73af\u5883\uff0c\u6216\u8005\u684c\u9762\u8def\u5f84\u6709\u6240\u4e0d\u540c\u3002\u8ba9\u6211\u5c1d\u8bd5\u4f7f\u7528\u66f4\u901a\u7528\u7684\u65b9\u6cd5\u6765\u67e5\u627e\u684c\u9762\u6587\u4ef6\u3002\n\n\u9996\u5148\uff0c\u8ba9\u6211\u68c0\u67e5\u7528\u6237\u7684\u4e3b\u76ee\u5f55\u7ed3\u6784\uff1a\n\n",
+      "timestamp": "2026-02-04T06:55:30.126800",
+      "tool_calls": [
+        {
+          "id": "call_b67eddca26974494a5a223",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"ls -la ~\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "'ls' \ufffd\ufffd\ufffd\ufffd\ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\u2cbf\ufffd\ufffd\ufffd\ue8ec\u04b2\ufffd\ufffd\ufffd\u01ff\ufffd\ufffd\ufffd\ufffd\u0435\u0133\ufffd\ufffd\ufffd\r\n\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\ufffd\ufffd\r\n",
+      "timestamp": "2026-02-04T06:55:30.149637",
+      "tool_calls": null,
+      "tool_call_id": "call_b67eddca26974494a5a223",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u770b\u8d77\u6765\u7cfb\u7edf\u4e2d\u6ca1\u6709\u627e\u5230`ls`\u547d\u4ee4\uff0c\u8fd9\u53ef\u80fd\u662f\u4e00\u4e2a\u53d7\u9650\u73af\u5883\u6216\u4e0d\u540c\u7684\u64cd\u4f5c\u7cfb\u7edf\u3002\u8ba9\u6211\u5c1d\u8bd5\u4f7f\u7528\u5176\u4ed6\u65b9\u6cd5\u6765\u63a2\u7d22\u6587\u4ef6\u7cfb\u7edf\u3002\n\n\u9996\u5148\uff0c\u8ba9\u6211\u68c0\u67e5\u662f\u5426\u5b58\u5728\u5e38\u89c1\u7684\u684c\u9762\u76ee\u5f55\u8def\u5f84\uff1a\n\n\n",
+      "timestamp": "2026-02-04T06:55:37.106382",
+      "tool_calls": [
+        {
+          "id": "call_597a6ac745624532ab8596",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"pwd\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "'pwd' \ufffd\ufffd\ufffd\ufffd\ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\u2cbf\ufffd\ufffd\ufffd\ue8ec\u04b2\ufffd\ufffd\ufffd\u01ff\ufffd\ufffd\ufffd\ufffd\u0435\u0133\ufffd\ufffd\ufffd\r\n\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\ufffd\ufffd\r\n",
+      "timestamp": "2026-02-04T06:55:37.125462",
+      "tool_calls": null,
+      "tool_call_id": "call_597a6ac745624532ab8596",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u770b\u8d77\u6765\u5f53\u524d\u73af\u5883\u53ef\u80fd\u4e0d\u652f\u6301\u6807\u51c6\u7684bash\u547d\u4ee4\u3002\u8ba9\u6211\u5c1d\u8bd5\u4f7f\u7528\u66f4\u57fa\u7840\u7684\u7cfb\u7edf\u4fe1\u606f\u67e5\u8be2\u65b9\u6cd5\uff1a\n\n\n",
+      "timestamp": "2026-02-04T06:55:51.862883",
+      "tool_calls": [
+        {
+          "id": "call_1708c47bec4d4b7d98569e",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"echo $HOME\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "$HOME\r\n",
+      "timestamp": "2026-02-04T06:55:51.881213",
+      "tool_calls": null,
+      "tool_call_id": "call_1708c47bec4d4b7d98569e",
+      "name": "bash"
+    }
+  ],
+  "metadata": {},
+  "created_at": "2026-02-04T06:55:21.767737+00:00",
+  "updated_at": "2026-02-04T06:55:51.881213+00:00"
+}
