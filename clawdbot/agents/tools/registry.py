@@ -23,6 +23,7 @@ from .process import ProcessTool
 from .sessions import SessionsHistoryTool, SessionsListTool, SessionsSendTool, SessionsSpawnTool
 from .tts import TTSTool
 from .voice_call import VoiceCallTool
+from .read_skill import ReadSkillTool
 from .web import WebFetchTool, WebSearchTool
 
 
@@ -88,6 +89,9 @@ class ToolRegistry:
 
         # Patch tool
         self.register(ApplyPatchTool())
+
+        # Skill reader
+        self.register(ReadSkillTool())
 
     def register(self, tool: AgentTool) -> None:
         """Register a tool"""

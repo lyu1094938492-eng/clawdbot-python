@@ -1,0 +1,157 @@
+{
+  "session_id": "openai-compat-b2c030e7",
+  "messages": [
+    {
+      "role": "system",
+      "content": "<identity>\nYou are ClawdBot, a powerful agentic AI coding assistant designed by the Google Deepmind team.\nYou are implemented in Python and have direct access to the user's system via established tools.\n</identity>\n\n<capabilities>\nYou have access to the following tool categories:\n1. **System Operations**: Using the `bash` tool to execute shell commands (Windows PowerShell compatible).\n2. **File Management**: Using `read_file`, `write_file`, and `edit_file` to manipulate local files.\n3. **Web & Search**: Fetching URLs or searching the web.\n4. **Skills**: Predefined instruction sets for complex tasks.\n</capabilities>\n\n<instructions>\n1. **Proactiveness**: When a user asks a question that requires system information (e.g., \"what's in my folder\", \"current disk space\"), DO NOT just explain how to do it. USE YOUR TOOLS to find out and report the result.\n2. **Thinking Process**: In every response that requires tools, start with a `<thinking>` section. Analyze the user request, determine the necessary steps, and list the tools you intend to use.\n3. **Tool Call Format**: Use the standard tool calling mechanism provided by the runtime.\n4. **Environment Awareness**: You are running on a Windows system. Use PowerShell-compatible commands when using the `bash` tool.\n</instructions>\n\n<available_skills>\n\n### SPECIALIZED SKILLS\nUse 'read_skill' to see details for any of the following available skills:\nAvailable: 1password, apple-notes, apple-reminders, bear-notes, bird, blogwatcher, bluebubbles, camsnap, clawdhub, coding-agent, discord-adv, eightctl, food-order, gemini, gifgrep, github, gog, goplaces, himalaya, imsg, local-places, mcporter, model-usage, nano-banana-pro, nano-pdf, notion, obsidian, openai-image-gen, openai-whisper, openhue, oracle, ordercli, peekaboo, sag, session-logs, sherpa-onnx-tts, skill-creator, slack, songsee, sonoscli, spotify-player, summarize, things-mac, tmux, trello, video-frames, voice-call, wacli, weather, web-search\n\n</available_skills>\n\n<personality>\n## Personality & Tone\n- You are professional, efficient, and direct.\n- You avoid excessive politeness or filler words.\n- You take pride in being a \"functional\" assistant that gets things done rather than just talking.\n- If you encounter an error while using a tool, acknowledge it honestly and try a different approach (e.g., a different command or tool).\n\n## Interaction Rules\n- Use Markdown for formatting your response.\n- When reporting system information (like file lists or space usage), use tables or code blocks for readability.\n- If the user's request is ambiguous, ask for clarification before taking potentially destructive actions (like deleting files).\n\n</personality>",
+      "timestamp": "2026-02-05T16:20:05.348079",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "user",
+      "content": "\u5e2e\u6211\u67e5\u4e00\u4e0b\u65e7\u91d1\u5c71\u7684\u5929\u6c14\u600e\u4e48\u6837\uff1f",
+      "timestamp": "2026-02-05T16:20:05.349590",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "assistant",
+      "content": "I'll help you check the weather in San Francisco. Let me use the weather skill for this.\n\n",
+      "timestamp": "2026-02-05T16:20:10.679841",
+      "tool_calls": [
+        {
+          "id": "call_930a7ff60314429f99de3e1d",
+          "type": "function",
+          "function": {
+            "name": "read_skill",
+            "arguments": "{\"skill_name\": \"weather\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "# Skill: weather\n\nDescription: Get weather information for locations\nInstructions:\n# Weather Information\n\nGet current weather and forecasts for any location.\n\n## How to Use\n\nUse the web_fetch tool to query weather APIs:\n\n### OpenWeatherMap\n```\nhttps://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}\n```\n\n### wttr.in (No API key required)\n```\nhttps://wttr.in/{location}?format=j1\n```\n\n## Response Format\n\nParse the JSON response and provide:\n- Current temperature\n- Weather conditions\n- Humidity\n- Wind speed\n- Forecast (if available)\n\n## Example\n\n\"What's the weather in San Francisco?\"\n\n1. Fetch: `https://wttr.in/San Francisco?format=j1`\n2. Parse response\n3. Format user-friendly response:\n   \"Current weather in San Francisco: 65\u00b0F, Partly Cloudy, Humidity: 70%, Wind: 10 mph\"\n",
+      "timestamp": "2026-02-05T16:20:10.682051",
+      "tool_calls": null,
+      "tool_call_id": "call_930a7ff60314429f99de3e1d",
+      "name": "read_skill"
+    },
+    {
+      "role": "assistant",
+      "content": "Now I'll check the current weather in San Francisco using the wttr.in service.\n\n",
+      "timestamp": "2026-02-05T16:20:14.976502",
+      "tool_calls": [
+        {
+          "id": "call_09f652de4f514f1c9f1f2d02",
+          "type": "function",
+          "function": {
+            "name": "web_fetch",
+            "arguments": "{\"url\": \"https://wttr.in/San%20Francisco?format=j1\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "",
+      "timestamp": "2026-02-05T16:20:37.912859",
+      "tool_calls": null,
+      "tool_call_id": "call_09f652de4f514f1c9f1f2d02",
+      "name": "web_fetch"
+    },
+    {
+      "role": "assistant",
+      "content": "It seems the web fetch didn't return any data. Let me try again with a slightly different format for the URL.\n\n",
+      "timestamp": "2026-02-05T16:20:45.491365",
+      "tool_calls": [
+        {
+          "id": "call_6d9f997d4c5c48a4829bd437",
+          "type": "function",
+          "function": {
+            "name": "web_fetch",
+            "arguments": "{\"url\": \"https://wttr.in/San_Francisco?format=j1\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "Fetched 50512 bytes of application/json",
+      "timestamp": "2026-02-05T16:20:56.927161",
+      "tool_calls": null,
+      "tool_call_id": "call_6d9f997d4c5c48a4829bd437",
+      "name": "web_fetch"
+    },
+    {
+      "role": "assistant",
+      "content": "The fetch was successful but the output wasn't formatted properly in the display. Let me use a different approach to get the weather information for San Francisco.\n\n",
+      "timestamp": "2026-02-05T16:21:02.821461",
+      "tool_calls": [
+        {
+          "id": "call_e1c528b5b4c04cbd892639b4",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"curl -s \\\"https://wttr.in/San_Francisco?format=j1\\\"\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "",
+      "timestamp": "2026-02-05T16:21:17.116250",
+      "tool_calls": null,
+      "tool_call_id": "call_e1c528b5b4c04cbd892639b4",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "Let me try another approach to get the weather information for San Francisco.\n\n",
+      "timestamp": "2026-02-05T16:21:21.570111",
+      "tool_calls": [
+        {
+          "id": "call_f2f778fa9e9c49bab1fd2370",
+          "type": "function",
+          "function": {
+            "name": "web_search",
+            "arguments": "{\"query\": \"current weather in San Francisco\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "No results found",
+      "timestamp": "2026-02-05T16:21:28.718723",
+      "tool_calls": null,
+      "tool_call_id": "call_f2f778fa9e9c49bab1fd2370",
+      "name": "web_search"
+    },
+    {
+      "role": "assistant",
+      "content": "I apologize for the technical issues with fetching the weather data directly. Let me try one more approach to get the current weather in San Francisco.\n\nBased on my attempts to retrieve the live weather data, I'm unable to successfully pull the information due to connectivity or API limitations. However, I can guide you on how to check the weather yourself:\n\n1. Visit wttr.in in your browser and enter \"San Francisco\" \n2. Use a weather app on your device\n3. Search for \"San Francisco weather\" in your preferred search engine\n\nWould you like me to try a different method to obtain this information for you? Or would you prefer guidance on reliable weather sources?",
+      "timestamp": "2026-02-05T16:21:35.288500",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    }
+  ],
+  "metadata": {},
+  "created_at": "2026-02-05T16:20:05.345215+00:00",
+  "updated_at": "2026-02-05T16:21:35.288500+00:00"
+}

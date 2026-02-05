@@ -1,0 +1,24 @@
+{
+  "session_id": "openai-compat-6de8345a",
+  "messages": [
+    {
+      "role": "user",
+      "content": "????????????????????????",
+      "timestamp": "2026-02-05T14:50:03.091813",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "assistant",
+      "content": "It looks like you might have entered a series of question marks by mistake. Could you please clarify what you're asking or looking for? I'm here to help!",
+      "timestamp": "2026-02-05T14:50:13.994100",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    }
+  ],
+  "metadata": {},
+  "created_at": "2026-02-05T14:50:03.058329+00:00",
+  "updated_at": "2026-02-05T14:50:13.994100+00:00"
+}

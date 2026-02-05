@@ -17,6 +17,7 @@ from pydantic import BaseModel
 
 from ..agents.runtime import AgentRuntime
 from ..agents.session import SessionManager
+from ..agents.tools.prompt_manager import get_prompt_manager
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,8 @@ class ChatMessage(BaseModel):
     """Chat message"""
 
     role: str
-    content: str
+    content: str | None = None
+    tool_calls: list[dict] | None = None
     name: str | None = None
 
 
@@ -53,6 +55,7 @@ class ChatCompletionChoice(BaseModel):
     index: int
     message: ChatMessage
     finish_reason: str | None = None
+    logprobs: dict | None = None
 
 
 class ChatCompletionUsage(BaseModel):
@@ -72,6 +75,7 @@ class ChatCompletionResponse(BaseModel):
     model: str
     choices: list[ChatCompletionChoice]
     usage: ChatCompletionUsage | None = None
+    system_fingerprint: str | None = None
 
 
 class ChatCompletionChunkDelta(BaseModel):
@@ -79,6 +83,7 @@ class ChatCompletionChunkDelta(BaseModel):
 
     role: str | None = None
     content: str | None = None
+    tool_calls: list[dict] | None = None
 
 
 class ChatCompletionChunkChoice(BaseModel):
@@ -97,6 +102,8 @@ class ChatCompletionChunk(BaseModel):
     created: int
     model: str
     choices: list[ChatCompletionChunkChoice]
+    usage: ChatCompletionUsage | None = None
+    system_fingerprint: str | None = None
 
 
 class ModelInfo(BaseModel):
@@ -206,6 +213,22 @@ async def chat_completions(
     # Clear session for fresh context (OpenAI-style stateless)
     session.clear()
 
+    # Check for system message
+    has_system_msg = any(msg.role == "system" for msg in request.messages)
+    
+    if not has_system_msg:
+        # Get the latest user message as a query for skill matching
+        user_query = ""
+        for msg in reversed(request.messages):
+            if msg.role == "user" and msg.content:
+                user_query = msg.content
+                break
+        
+        # Load and Inject fully assembled system prompt (dynamically specialized)
+        prompt_manager = get_prompt_manager()
+        full_system_prompt = prompt_manager.get_full_system_prompt(query=user_query)
+        session.add_system_message(full_system_prompt)
+
     # Add messages to session
     for msg in request.messages:
         if msg.role == "system":
@@ -233,6 +256,8 @@ async def chat_completions(
     if request.stream:
         # Streaming response
         async def stream_response() -> AsyncIterator[str]:
+            start_time = time.time()
+            ttfc = None
             try:
                 # Send initial chunk with role
                 initial_chunk = ChatCompletionChunk(
@@ -246,6 +271,10 @@ async def chat_completions(
                     ],
                 )
                 yield f"data: {initial_chunk.model_dump_json()}\n\n"
+
+                # Metadata tracking
+                total_usage = None
+                system_fingerprint = None
 
                 # Stream content
                 async for event in runtime.run_turn(
@@ -267,18 +296,77 @@ async def chat_completions(
                                         delta=ChatCompletionChunkDelta(content=delta["text"]),
                                     )
                                 ],
+                                system_fingerprint=system_fingerprint
                             )
                             yield f"data: {chunk.model_dump_json()}\n\n"
+                            
+                            if ttfc is None:
+                                ttfc = (time.time() - start_time) * 1000
+                                logger.info(f"TTFC: {ttfc:.2f}ms")
                     
-                    elif event.type == "tool_use":
-                        # We don't stream tool calls yet in this simplified compat layer,
-                        # but we could add it if needed. For now, we just log it.
-                        logger.info(f"Tool use in stream: {event.data}")
-                        # If we want to support streaming tool calls to OpenAI clients:
-                        # (This is complex because OpenAI expects tool_calls with index and ID)
-                        pass
+                    elif event.type == "metadata":
+                        system_fingerprint = event.data.get("system_fingerprint")
+                        logger.info(f"Metadata received: {event.data}")
 
-                # Send final chunk
+                    elif event.type == "usage":
+                        total_usage = ChatCompletionUsage(**event.data)
+                        logger.info(f"Usage received: {event.data}")
+
+                    elif event.type == "tool_use":
+                        # Convert Agent tool_use event to OpenAI tool_calls format
+                        tool_call = {
+                            "id": f"call_{uuid.uuid4().hex[:12]}",
+                            "type": "function",
+                            "function": {
+                                "name": event.data.get("tool"),
+                                "arguments": json.dumps(event.data.get("input", {}))
+                            }
+                        }
+                        chunk = ChatCompletionChunk(
+                            id=completion_id,
+                            created=created,
+                            model=request.model,
+                            choices=[
+                                ChatCompletionChunkChoice(
+                                    index=0,
+                                    delta=ChatCompletionChunkDelta(tool_calls=[tool_call]),
+                                )
+                            ],
+                            system_fingerprint=system_fingerprint
+                        )
+                        yield f"data: {chunk.model_dump_json()}\n\n"
+                        logger.info(f"Tool use streamed: {event.data.get('tool')}")
+
+                    elif event.type == "tool_result":
+                        # Stream the result of the tool execution
+                        chunk = ChatCompletionChunk(
+                            id=completion_id,
+                            created=created,
+                            model=request.model,
+                            choices=[
+                                ChatCompletionChunkChoice(
+                                    index=0,
+                                    delta=ChatCompletionChunkDelta(
+                                        # Use a custom field or specific role to signal result
+                                        tool_calls=[{
+                                            "index": 0,
+                                            "id": event.data.get("id"),
+                                            "type": "function",
+                                            "function": {
+                                                "name": event.data.get("tool"),
+                                                "output": event.data.get("result")
+                                            }
+                                        }]
+                                    ),
+                                )
+                            ],
+                            system_fingerprint=system_fingerprint
+                        )
+                        yield f"data: {chunk.model_dump_json()}\n\n"
+                        logger.info(f"Tool result streamed: {event.data.get('tool')}")
+
+                # Send final chunk with usage if available
+                duration = (time.time() - start_time) * 1000
                 final_chunk = ChatCompletionChunk(
                     id=completion_id,
                     created=created,
@@ -288,7 +376,15 @@ async def chat_completions(
                             index=0, delta=ChatCompletionChunkDelta(), finish_reason="stop"
                         )
                     ],
+                    usage=total_usage,
+                    system_fingerprint=system_fingerprint
                 )
+                
+                # We can't easily add duration to standard OpenAI Chunk model without breaking Pydantic,
+                # so we log it or add to a private metadata field if we extend the model.
+                # Let's add it to a 'performance' field in our models if we want to be '全面'.
+                logger.info(f"Stream complete | Duration: {duration:.2f}ms | TTFC: {ttfc if ttfc else 'N/A'}")
+                
                 yield f"data: {final_chunk.model_dump_json()}\n\n"
                 yield "data: [DONE]\n\n"
 
@@ -301,8 +397,9 @@ async def chat_completions(
 
     else:
         # Non-streaming response
-        try:
-            response_text = ""
+            # Metadata tracking
+            total_usage = None
+            system_fingerprint = None
 
             async for event in runtime.run_turn(
                 session,
@@ -314,10 +411,22 @@ async def chat_completions(
                     delta = event.data.get("delta", {})
                     if "text" in delta:
                         response_text += delta["text"]
+                
+                elif event.type == "usage":
+                    total_usage = ChatCompletionUsage(**event.data)
+                
+                elif event.type == "metadata":
+                    system_fingerprint = event.data.get("system_fingerprint")
 
-            # Estimate tokens (rough approximation)
-            prompt_tokens = sum(len(m.content) // 4 for m in request.messages)
-            completion_tokens = len(response_text) // 4
+            # Fallback estimation if no usage reported
+            if not total_usage:
+                prompt_tokens = sum(len(m.content) // 4 for m in request.messages if m.content)
+                completion_tokens = len(response_text) // 4
+                total_usage = ChatCompletionUsage(
+                    prompt_tokens=prompt_tokens,
+                    completion_tokens=completion_tokens,
+                    total_tokens=prompt_tokens + completion_tokens,
+                )
 
             return ChatCompletionResponse(
                 id=completion_id,
@@ -330,11 +439,8 @@ async def chat_completions(
                         finish_reason="stop",
                     )
                 ],
-                usage=ChatCompletionUsage(
-                    prompt_tokens=prompt_tokens,
-                    completion_tokens=completion_tokens,
-                    total_tokens=prompt_tokens + completion_tokens,
-                ),
+                usage=total_usage,
+                system_fingerprint=system_fingerprint
             )
 
         except Exception as e:

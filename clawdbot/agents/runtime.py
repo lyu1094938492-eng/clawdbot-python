@@ -344,6 +344,12 @@ class MultiProviderRuntime:
                                     "assistant", {"delta": {"type": "text_delta", "text": text}}
                                 )
 
+                        elif response.type == "metadata":
+                            yield AgentEvent("metadata", response.content)
+
+                        elif response.type == "usage":
+                            yield AgentEvent("usage", response.content)
+
                         elif response.type == "tool_call":
                             tool_calls = response.tool_calls or []
 

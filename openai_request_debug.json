@@ -3,50 +3,70 @@
   "messages": [
     {
       "role": "system",
-      "content": "You are a helpful AI assistant with system access. Use the provided tools to help the user."
+      "content": "<identity>\nYou are ClawdBot, a powerful agentic AI coding assistant designed by the Google Deepmind team.\nYou are implemented in Python and have direct access to the user's system via established tools.\n</identity>\n\n<capabilities>\nYou have access to the following tool categories:\n1. **System Operations**: Using the `bash` tool to execute shell commands (Windows PowerShell compatible).\n2. **File Management**: Using `read_file`, `write_file`, and `edit_file` to manipulate local files.\n3. **Web & Search**: Fetching URLs or searching the web.\n4. **Skills**: Predefined instruction sets for complex tasks.\n</capabilities>\n\n<instructions>\n1. **Proactiveness**: When a user asks a question that requires system information (e.g., \"what's in my folder\", \"current disk space\"), DO NOT just explain how to do it. USE YOUR TOOLS to find out and report the result.\n2. **Thinking Process**: In every response that requires tools, start with a `<thinking>` section. Analyze the user request, determine the necessary steps, and list the tools you intend to use.\n3. **Tool Call Format**: Use the standard tool calling mechanism provided by the runtime.\n4. **Environment Awareness**: You are running on a Windows system. Use PowerShell-compatible commands when using the `bash` tool.\n</instructions>\n\n<available_skills>\n\n### SPECIALIZED SKILLS\nUse 'read_skill' to see details for any of the following available skills:\nAvailable: 1password, apple-notes, apple-reminders, bear-notes, bird, blogwatcher, bluebubbles, camsnap, clawdhub, coding-agent, discord-adv, eightctl, food-order, gemini, gifgrep, github, gog, goplaces, himalaya, imsg, local-places, mcporter, model-usage, nano-banana-pro, nano-pdf, notion, obsidian, openai-image-gen, openai-whisper, openhue, oracle, ordercli, peekaboo, sag, session-logs, sherpa-onnx-tts, skill-creator, slack, songsee, sonoscli, spotify-player, summarize, things-mac, tmux, trello, video-frames, voice-call, wacli, weather, web-search\n\n</available_skills>\n\n<personality>\n## Personality & Tone\n- You are professional, efficient, and direct.\n- You avoid excessive politeness or filler words.\n- You take pride in being a \"functional\" assistant that gets things done rather than just talking.\n- If you encounter an error while using a tool, acknowledge it honestly and try a different approach (e.g., a different command or tool).\n\n## Interaction Rules\n- Use Markdown for formatting your response.\n- When reporting system information (like file lists or space usage), use tables or code blocks for readability.\n- If the user's request is ambiguous, ask for clarification before taking potentially destructive actions (like deleting files).\n\n</personality>"
     },
     {
       "role": "user",
-      "content": "我的桌面有什么文件夹？你可以使用 bash 工具运行 'dir %USERPROFILE%\\Desktop'。"
+      "content": "帮我看看我的桌面上哪个文件夹最占用空间？"
     },
     {
       "role": "assistant",
-      "content": "我需要查看您桌面上的文件夹。让我使用适当的命令来获取这些信息。\n\n",
+      "content": "<thinking>\n用户想要知道桌面上哪个文件夹最占用空间。我需要：\n1. 首先确定桌面的路径\n2. 列出桌面下的所有文件夹\n3. 计算每个文件夹的大小\n4. 比较并找出占用空间最大的文件夹\n\n在Windows系统中，通常桌面路径是 %USERPROFILE%\\Desktop 或 C:\\Users\\{用户名}\\Desktop。\n我将使用bash命令来获取这些信息。\n</thinking>\n\n让我帮您查看桌面上哪个文件夹最占用空间。\n\n首先，我需要找到您的桌面路径并列出其中的文件夹：\n\n",
       "tool_calls": [
         {
-          "id": "call_ca29b17869c84b9fa2a49183",
+          "id": "call_d75d93b2b0eb4f65a4fbcfd1",
           "type": "function",
           "function": {
             "name": "bash",
-            "arguments": "{\"command\": \"ls -la ~/Desktop\"}"
+            "arguments": "{\"command\": \"Get-ChildItem -Path $env:USERPROFILE\\\\Desktop -Directory | Get-FolderSize | Sort-Object Size -Descending | Select-Object Name, @{Name=\\\"Size(MB)\\\";Expression={[math]::Round($_.Size/1MB, 2)}} | Head -10\"}"
           }
         }
       ]
     },
     {
       "role": "tool",
-      "content": "'ls' �����ڲ����ⲿ���Ҳ���ǿ����еĳ���\r\n���������ļ���\r\n",
-      "tool_call_id": "call_ca29b17869c84b9fa2a49183",
+      "content": "'Get-ChildItem' �����ڲ����ⲿ���Ҳ���ǿ����еĳ���\r\n���������ļ���\r\n",
+      "tool_call_id": "call_d75d93b2b0eb4f65a4fbcfd1",
       "name": "bash"
     },
     {
       "role": "assistant",
-      "content": "看起来您使用的是Windows系统，我尝试使用正确的命令来查看您的桌面文件夹：\n\n",
+      "content": "抱歉，看来PowerShell命令执行遇到了问题。让我尝试另一种方式来获取桌面文件夹的信息。\n\n首先，让我检查一下您的桌面路径：\n\n",
       "tool_calls": [
         {
-          "id": "call_5e90848724d54ce79aacf956",
+          "id": "call_80a861c8b0da41ba8cd4dc40",
           "type": "function",
           "function": {
             "name": "bash",
-            "arguments": "{\"command\": \"dir %USERPROFILE%\\\\Desktop\"}"
+            "arguments": "{\"command\": \"echo $env:USERPROFILE\"}"
           }
         }
       ]
     },
     {
       "role": "tool",
-      "content": " ������ C �еľ�û�б�ǩ��\r\n �������к��� 3C38-5610\r\n\r\n C:\\Users\\bige\\Desktop ��Ŀ¼\r\n\r\n2026/02/01  00:36    <DIR>          .\r\n2026/02/01  00:36    <DIR>          ..\r\n2025/12/18  22:10             1,378 Antigravity.lnk\r\n2025/02/22  23:59    <DIR>          beautichen\r\n2025/03/23  20:58           229,663 beian.jpg\r\n2025/08/27  23:05           137,643 Bubuyier.gif\r\n2025/03/01  09:47             2,200 Canva.lnk\r\n2025/04/10  22:38             2,072 CCtalk.lnk\r\n2026/01/31  16:19               586 com.docker.llama-server.20260131-161902-706.log\r\n2026/01/31  16:19               586 com.docker.llama-server.20260131-161903-572.log\r\n2026/02/01  00:36             2,136 Docker Desktop.lnk\r\n2025/03/16  21:29    <DIR>          ESGDATA\r\n2025/11/25  00:26             3,165 Google Gemini.lnk\r\n2026/01/18  23:38             2,961 Google Maps.lnk\r\n2025/11/22  20:25           205,979 isaca2025.pdf\r\n2025/11/04  04:35     2,139,401,983 national flag.mp4\r\n2025/02/17  21:32         7,550,384 OfficeSetup.exe\r\n2025/08/27  23:08             8,514 OIP-C.webp\r\n2026/02/04  22:06    <DIR>          project\r\n2025/02/25  22:10        28,604,208 python-3.13.2-amd64.exe\r\n2025/11/24  21:52           951,553 R-C.jfif\r\n2025/04/06  22:08           194,108 To-khai-thi-thuc.pdf\r\n2026/01/24  16:29               618 Trae.lnk\r\n2025/02/25  21:55             1,235 Visual Studio Code.lnk\r\n2025/02/18  20:53       121,323,520 Workspace_win.msi\r\n2025/11/24  21:52           858,279 world map.jfif\r\n2025/01/10  20:30             2,407 WPS Office.lnk\r\n2025/03/03  22:05             1,920 �������񡿼�ӳ�ʶ���������Ļרҵ���빤��.lnk\r\n2025/07/31  22:19    <DIR>          ר�β�����\r\n2025/04/12  15:59               716 ��ӳרҵ��.lnk\r\n2025/04/13  11:49    <DIR>          ������Ϣ\r\n2025/04/06  22:33           122,567 ΢��ͼƬ_20250406223326.jpg\r\n2025/03/16  22:38            12,180 ΢��С����ͼ��.png\r\n2025/11/26  23:08               748 ΢�ſ����߹���.lnk\r\n2025/03/03  19:44             1,070 ����.lnk\r\n2025/12/18  21:14    <DIR>          ����\r\n2025/12/18  01:23            62,035 ����.PNG\r\n2025/12/17  00:38            20,604 �½� DOCX �ĵ�.docx\r\n2025/02/12  23:41            20,992 �½� PPT ��ʾ�ĸ�.ppt\r\n2025/03/18  22:00            39,939 �½� PPTX ��ʾ�ĸ�.pptx\r\n2025/03/13  21:40             8,597 �½� XLSX ������.xlsx\r\n2025/12/17  01:40            15,856 �½��ı��ĵ�.HTML\r\n2025/01/10  20:29             1,212 ����Office.lnk\r\n2025/03/01  18:16            36,939 ̼˰ͨV1.pptx\r\n              36 ���ļ�  2,299,830,553 �ֽ�\r\n               8 ��Ŀ¼ 17,932,513,280 �����ֽ�\r\n",
-      "tool_call_id": "call_5e90848724d54ce79aacf956",
+      "content": "$env:USERPROFILE\r\n",
+      "tool_call_id": "call_80a861c8b0da41ba8cd4dc40",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "我看到环境变量没有正确展开。让我尝试使用不同的方法来查看桌面文件夹的大小信息：\n\n",
+      "tool_calls": [
+        {
+          "id": "call_3b9fb2c85fbb47a2857165ab",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"powershell -Command \\\"Get-ChildItem -Path $HOME\\\\Desktop -Directory | ForEach-Object { [PSCustomObject]@{Name = $_.Name; Size = [Math]::Round((Get-ChildItem $_.FullName -Recurse -File | Measure-Object -Property Length -Sum).Sum / 1MB, 2); Path = $_.FullName} } | Sort-Object Size -Descending | Select-Object -First 10 Name, Size, Path\\\"\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "\r\nName       Size Path                        \r\n----       ---- ----                        \r\nproject 1903.23 C:\\Users\\13613\\Desktop\\pr...\r\n\r\n\r\n",
+      "tool_call_id": "call_3b9fb2c85fbb47a2857165ab",
       "name": "bash"
     }
   ],
@@ -679,6 +699,25 @@
           },
           "required": [
             "patch"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "read_skill",
+        "description": "Read full usage instructions and examples for a specific skill",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "skill_name": {
+              "type": "string",
+              "description": "The name of the skill to read (e.g., 'weather', 'obsidian', 'github')"
+            }
+          },
+          "required": [
+            "skill_name"
           ]
         }
       }

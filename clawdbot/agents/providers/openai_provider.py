@@ -89,6 +89,9 @@ class OpenAIProvider(LLMProvider):
             # Add tools if provided
             if tools:
                 params["tools"] = tools
+            
+            # Enable usage tracking in stream
+            params["stream_options"] = {"include_usage": True}
 
             # Start streaming
             import json
@@ -165,7 +168,25 @@ class OpenAIProvider(LLMProvider):
                         logger.info(f"Yielding tool_call: {tool_calls}")
                         yield LLMResponse(type="tool_call", content=None, tool_calls=tool_calls)
 
-                    yield LLMResponse(type="done", content=None, finish_reason=choice.finish_reason)
+                    yield LLMResponse(
+                        type="done", 
+                        content=None, 
+                        finish_reason=choice.finish_reason,
+                        usage=getattr(chunk, "usage", None) if hasattr(chunk, "usage") else None
+                    )
+                
+                # Capture system_fingerprint and usage from chunks that might not have choices
+                if hasattr(chunk, "system_fingerprint") and chunk.system_fingerprint:
+                    yield LLMResponse(type="metadata", content={"system_fingerprint": chunk.system_fingerprint})
+                
+                if hasattr(chunk, "usage") and chunk.usage:
+                    # In some chunks (especially the last one when using stream_options), usage is present
+                    usage_dict = {
+                        "prompt_tokens": chunk.usage.prompt_tokens,
+                        "completion_tokens": chunk.usage.completion_tokens,
+                        "total_tokens": chunk.usage.total_tokens
+                    }
+                    yield LLMResponse(type="usage", content=usage_dict)
 
         except Exception as e:
             logger.error(f"OpenAI streaming error: {e}")

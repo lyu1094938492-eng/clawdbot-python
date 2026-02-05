@@ -1,0 +1,132 @@
+{
+  "session_id": "openai-compat-fa9cbddf",
+  "messages": [
+    {
+      "role": "system",
+      "content": "<identity>\nYou are ClawdBot, a powerful agentic AI coding assistant designed by the Google Deepmind team.\nYou are implemented in Python and have direct access to the user's system via established tools.\n</identity>\n\n<capabilities>\nYou have access to the following tool categories:\n1. **System Operations**: Using the `bash` tool to execute shell commands (Windows PowerShell compatible).\n2. **File Management**: Using `read_file`, `write_file`, and `edit_file` to manipulate local files.\n3. **Web & Search**: Fetching URLs or searching the web.\n4. **Skills**: Predefined instruction sets for complex tasks.\n</capabilities>\n\n<instructions>\n1. **Proactiveness**: When a user asks a question that requires system information (e.g., \"what's in my folder\", \"current disk space\"), DO NOT just explain how to do it. USE YOUR TOOLS to find out and report the result.\n2. **Thinking Process**: In every response that requires tools, start with a `<thinking>` section. Analyze the user request, determine the necessary steps, and list the tools you intend to use.\n3. **Tool Call Format**: Use the standard tool calling mechanism provided by the runtime.\n4. **Environment Awareness**: You are running on a Windows system. Use PowerShell-compatible commands when using the `bash` tool.\n</instructions>\n\n<available_skills>\n\n### SPECIALIZED SKILLS\nUse 'read_skill' to see details for any of the following available skills:\nAvailable: 1password, apple-notes, apple-reminders, bear-notes, bird, blogwatcher, bluebubbles, camsnap, clawdhub, coding-agent, discord-adv, eightctl, food-order, gemini, gifgrep, github, gog, goplaces, himalaya, imsg, local-places, mcporter, model-usage, nano-banana-pro, nano-pdf, notion, obsidian, openai-image-gen, openai-whisper, openhue, oracle, ordercli, peekaboo, sag, session-logs, sherpa-onnx-tts, skill-creator, slack, songsee, sonoscli, spotify-player, summarize, things-mac, tmux, trello, video-frames, voice-call, wacli, weather, web-search\n\n</available_skills>\n\n<personality>\n## Personality & Tone\n- You are professional, efficient, and direct.\n- You avoid excessive politeness or filler words.\n- You take pride in being a \"functional\" assistant that gets things done rather than just talking.\n- If you encounter an error while using a tool, acknowledge it honestly and try a different approach (e.g., a different command or tool).\n\n## Interaction Rules\n- Use Markdown for formatting your response.\n- When reporting system information (like file lists or space usage), use tables or code blocks for readability.\n- If the user's request is ambiguous, ask for clarification before taking potentially destructive actions (like deleting files).\n\n</personality>",
+      "timestamp": "2026-02-05T16:19:28.813940",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "user",
+      "content": "\u6211\u7684\u684c\u9762\u4e0a\u54ea\u4e2a\u6587\u4ef6\u5939\u7684\u6700\u5360\u7528\u7a7a\u95f4",
+      "timestamp": "2026-02-05T16:19:28.818568",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "assistant",
+      "content": "\u6211\u6765\u5e2e\u4f60\u627e\u51fa\u684c\u9762\u4e0a\u54ea\u4e2a\u6587\u4ef6\u5939\u6700\u5360\u7528\u7a7a\u95f4\u3002\u9996\u5148\uff0c\u6211\u9700\u8981\u67e5\u770b\u4f60\u684c\u9762\u7684\u76ee\u5f55\u7ed3\u6784\u548c\u5404\u6587\u4ef6\u5939\u7684\u5927\u5c0f\u3002\n\n",
+      "timestamp": "2026-02-05T16:19:40.353438",
+      "tool_calls": [
+        {
+          "id": "call_b39ecaf6858a413e8d2d21cd",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"Get-ChildItem -Path $env:USERPROFILE\\\\Desktop -Directory | Sort-Object Length -Descending | Select-Object Name, @{Name='Size(MB)';Expression={[math]::Round($_.Length/1MB, 2)}} | Head -10\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "'Get-ChildItem' \ufffd\ufffd\ufffd\ufffd\ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\u2cbf\ufffd\ufffd\ufffd\ue8ec\u04b2\ufffd\ufffd\ufffd\u01ff\ufffd\ufffd\ufffd\ufffd\u0435\u0133\ufffd\ufffd\ufffd\r\n\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\ufffd\ufffd\r\n",
+      "timestamp": "2026-02-05T16:19:40.407378",
+      "tool_calls": null,
+      "tool_call_id": "call_b39ecaf6858a413e8d2d21cd",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u62b1\u6b49\uff0c\u770b\u6765\u6211\u4f7f\u7528\u7684\u547d\u4ee4\u5728\u60a8\u7684\u7cfb\u7edf\u4e0a\u4e0d\u88ab\u652f\u6301\u3002\u8ba9\u6211\u5c1d\u8bd5\u4f7f\u7528\u5176\u4ed6\u65b9\u6cd5\u6765\u67e5\u770b\u684c\u9762\u6587\u4ef6\u5939\u7684\u5927\u5c0f\u3002\n\n",
+      "timestamp": "2026-02-05T16:19:45.362420",
+      "tool_calls": [
+        {
+          "id": "call_2ef3177a485b4d7b9b6ac9aa",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"dir \\\"$env:USERPROFILE\\\\Desktop\\\" /AD\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "\u03f5\u0373\ufffd\u04b2\ufffd\ufffd\ufffd\u05b8\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\ufffd\ufffd\r\n",
+      "timestamp": "2026-02-05T16:19:45.384263",
+      "tool_calls": null,
+      "tool_call_id": "call_2ef3177a485b4d7b9b6ac9aa",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u770b\u8d77\u6765\u6211\u4eec\u5728\u83b7\u53d6\u684c\u9762\u4fe1\u606f\u65f6\u9047\u5230\u4e86\u4e00\u4e9b\u95ee\u9898\u3002\u8ba9\u6211\u5c1d\u8bd5\u53e6\u4e00\u79cd\u65b9\u5f0f\u6765\u5b9a\u4f4d\u60a8\u7684\u684c\u9762\u5e76\u68c0\u67e5\u5176\u5185\u5bb9\uff1a\n\n",
+      "timestamp": "2026-02-05T16:19:49.985200",
+      "tool_calls": [
+        {
+          "id": "call_38527f320d5a4b13a80a0e70",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"ls -la ~/\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "'ls' \ufffd\ufffd\ufffd\ufffd\ufffd\u06b2\ufffd\ufffd\ufffd\ufffd\u2cbf\ufffd\ufffd\ufffd\ue8ec\u04b2\ufffd\ufffd\ufffd\u01ff\ufffd\ufffd\ufffd\ufffd\u0435\u0133\ufffd\ufffd\ufffd\r\n\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\ufffd\ufffd\r\n",
+      "timestamp": "2026-02-05T16:19:50.009088",
+      "tool_calls": null,
+      "tool_call_id": "call_38527f320d5a4b13a80a0e70",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u6211\u770b\u5230\u6211\u4eec\u6b63\u5728\u4f7f\u7528Windows\u7cfb\u7edf\uff0c\u4e4b\u524d\u7684\u4e00\u4e9bUnix/Linux\u547d\u4ee4\u65e0\u6cd5\u6b63\u5e38\u5de5\u4f5c\u3002\u8ba9\u6211\u4f7f\u7528PowerShell\u547d\u4ee4\u6765\u67e5\u627e\u60a8\u684c\u9762\u4e0a\u7684\u6587\u4ef6\u5939\u53ca\u5176\u5927\u5c0f\uff1a\n\n",
+      "timestamp": "2026-02-05T16:19:56.232242",
+      "tool_calls": [
+        {
+          "id": "call_3d76a77bc49f46d39a0e068c",
+          "type": "function",
+          "function": {
+            "name": "bash",
+            "arguments": "{\"command\": \"powershell.exe -Command \\\"Get-ChildItem -Path $env:USERPROFILE\\\\Desktop -Directory | ForEach-Object { $size = (Get-ChildItem $_.FullName -Recurse -File | Measure-Object -Property Length -Sum).Sum; [PSCustomObject]@{Name=$_.Name; SizeInMB=[math]::Round($size/1MB,2)} } | Sort-Object SizeInMB -Descending | Select-Object -First 10\\\"\"}"
+          }
+        }
+      ],
+      "tool_call_id": null,
+      "name": null
+    },
+    {
+      "role": "tool",
+      "content": "\r\nName    SizeInMB\r\n----    --------\r\nproject  1896.61\r\n\r\n\r\n",
+      "timestamp": "2026-02-05T16:20:03.135965",
+      "tool_calls": null,
+      "tool_call_id": "call_3d76a77bc49f46d39a0e068c",
+      "name": "bash"
+    },
+    {
+      "role": "assistant",
+      "content": "\u6839\u636e\u67e5\u8be2\u7ed3\u679c\uff0c\u6211\u53ef\u4ee5\u770b\u5230\u60a8\u684c\u9762\u4e0a\u6709\u4e00\u4e2a\u540d\u4e3a \"project\" \u7684\u6587\u4ef6\u5939\uff0c\u5b83\u5360\u7528\u4e86\u6700\u591a\u7684\u7a7a\u95f4\uff0c\u5927\u5c0f\u7ea6\u4e3a **1896.61 MB**\uff08\u5927\u7ea61.85 GB\uff09\u3002\n\n\u8fd9\u4e2a \"project\" \u6587\u4ef6\u5939\u662f\u60a8\u684c\u9762\u4e0a\u5360\u7528\u7a7a\u95f4\u6700\u591a\u7684\u6587\u4ef6\u5939\u3002\u5982\u679c\u60a8\u60f3\u4e86\u89e3\u8fd9\u4e2a\u6587\u4ef6\u5939\u4e2d\u5177\u4f53\u5305\u542b\u4ec0\u4e48\u5185\u5bb9\u6216\u60f3\u8981\u7ba1\u7406\u5b83\u7684\u5b58\u50a8\u7a7a\u95f4\uff0c\u6211\u53ef\u4ee5\u5e2e\u60a8\u8fdb\u4e00\u6b65\u67e5\u770b\u3002",
+      "timestamp": "2026-02-05T16:20:08.611778",
+      "tool_calls": null,
+      "tool_call_id": null,
+      "name": null
+    }
+  ],
+  "metadata": {},
+  "created_at": "2026-02-05T16:19:28.691318+00:00",
+  "updated_at": "2026-02-05T16:20:08.611778+00:00"
+}

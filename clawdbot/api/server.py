@@ -254,10 +254,15 @@ def create_app() -> FastAPI:
             if request.model:
                 runtime = AgentRuntime(model=request.model)
 
+            # Get tools from registry
+            from ..agents.tools.registry import get_tool_registry
+            tool_registry = get_tool_registry(_session_manager)
+            tools = tool_registry.list_tools()
+
             # Execute agent turn
             response_text = ""
             async for event in runtime.run_turn(
-                session, request.message, max_tokens=request.max_tokens
+                session, request.message, tools=tools, max_tokens=request.max_tokens
             ):
                 if event.type == "assistant" and "delta" in event.data:
                     delta = event.data["delta"]

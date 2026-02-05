@@ -1,0 +1,11 @@
+{
+    "model": "qwen3-coder-plus",
+    "messages": [
+        {
+            "role": "user",
+            "content": "我的桌面上哪个文件夹的最占用空间"
+        }
+    ],
+    "stream": false,
+    "max_tokens": 4096
+}
